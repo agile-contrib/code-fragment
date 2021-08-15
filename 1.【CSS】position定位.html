@@ -1,12 +1,65 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>position定位 · CSS</title>
+    <style>
+        div {
+            outline: 1px solid red;
+            padding: 50px;
+        }
+
+        span {
+            display: inline-block;
+            width: 100px;
+            height: 200px;
+        }
+
+        .flag {
+
+            /* absolute的保护快 */
+            /* 非static */
+            position: relative;
+
+            outline: 2px solid rgb(43, 122, 70);
+        }
+
+        .position {
+
+            /* 1.首先，无论是什么定位（除了sticky会直接失效），如果没有写left或top，那么在对应方向上，停留在原来的位置，而不是一定等同0 */
+            left: 50px;
+            top: 50px;
+
+            /* 2.相对自己原来的位置定位，不脱离文档流 */
+            /* position: relative; */
+
+            /* 3.相对包含块位置定位，脱离文档流 */
+            /* position: absolute; */
+
+            /* 4.相对窗口，不脱离文档流，比如top：50，结点距离窗口上边缘最小是50，如果大于50，无效果，低于50的时候，始终保持为50 */
+            position: sticky;
+
+            /* 5.相对窗口，脱离文档流 */
+            /* position: fixed; */
+        }
+    </style>
 </head>
+
 <body>
+    <div>
+        <div class='flag'>
+            <div style='width: 350px;'>
+                <span style='background-color: rgb(54, 184, 43);'>1</span>
+                <span class='position' style='background-color: rgb(8, 115, 187);'>2定位</span>
+                <span style='background-color: rgb(177, 11, 149);'>3</span>
+                <span style='background-color: rgb(173, 231, 13);'>4</span>
+            </div>
+        </div>
+    </div>
 
 </body>
+
 </html>
