@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vertical-align垂直对齐方式</title>
+    <style>
+        div {
+            outline: 1px solid red;
+            font-size: 0;
+        }
+
+        span {
+            outline: 1px solid green;
+
+            /*
+            简单的理解就是我的什么和父亲的什么对齐
+            比如下面的top，就表示我的上边缘和父亲的上边缘对齐
+            记住的是，这是一种期望，最终浏览器会尽力满足大家的期望
+             */
+            vertical-align: top;
+            font-size: 30px;
+        }
+
+        img {
+            /* vertical-align: middle; */
+        }
+
+        .center-line {
+            background-image: url('./images/dot.jpg');
+            background-repeat: repeat-x;
+            background-position: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class='center-line'>
+        <span class='center-line'>i右边是一只猫</span><img src="./images/cat.jpeg">
+    </div>
+
+</body>
+
+</html>
