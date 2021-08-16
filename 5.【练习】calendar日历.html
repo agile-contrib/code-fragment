@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>calendar日历</title>
+    <style>
+        #calendar {
+            border: 1px solid #555555;
+            width: 245px;
+        }
+
+        .header {
+            text-align: center;
+        }
+
+        .header>button {
+            border: none;
+        }
+
+        .header>h3 {
+            display: inline-block;
+            width: 150px;
+        }
+
+        .title>span,
+        .items>span {
+            display: inline-block;
+            width: 35px;
+            height: 35px;
+            line-height: 35px;
+            text-align: center;
+        }
+
+        .gray {
+            color: #c2bbbb;
+        }
+    </style>
+    <script>
+
+        // 计算某月多少天
+        function calcDays(year, month) {
+
+            if (month == 2) {
+
+                if ((year % 4 != 0) || (year % 100 == 0 && year % 400 != 0)) {
+                    return 28;
+                } else {
+                    return 29;
+                }
+
+            } else {
+                return [31, -1, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month - 1];
+            }
+
+        }
+
+        // 计算某年处于的十年
+        function calcYears(year) {
+            var beginYear = +(Math.floor(2019 / 10) + "0");
+            return [beginYear, beginYear + 1, beginYear + 2, beginYear + 3, beginYear + 4, beginYear + 5, beginYear + 6, beginYear + 7, beginYear + 8, beginYear + 9];
+        }
+
+        // 计算某月日历视图的天数组
+        function calcDaysArray(year, month) {
+
+            // 0->周日 1->周一 ... 6->周六
+            var index = new Date('2021/8/15').getDay();
+
+            // 前置多少天
+            var preNum = index - 1;
+            if (preNum == -1) preNum = 7;
+
+            // 本月多少天
+            var curNum = calcDays(year, month);
+
+            // 后置多少天
+            var nextNum = 42 - preNum - curNum;
+
+            var daysArray = {
+                pre: [],
+                cur: [],
+                next: []
+            };
+
+            // 前置天数组
+            var preMonthDays = calcDays(month == 1 ? year - 1 : year, month == 1 ? 12 : month - 1);
+            for (var i = preNum; i > 0; i--) {
+                daysArray.pre.push(preMonthDays - i + 1);
+            }
+
+            // 本月天数组
+            for (var i = 1; i <= curNum; i++) {
+                daysArray.cur.push(i);
+            }
+
+            // 后置天数组
+            for (var i = 1; i <= nextNum; i++) {
+                daysArray.next.push(i);
+            }
+
+            return daysArray;
+        }
+
+        // 显示选择天视图
+        function selectDayView(year, month) {
+
+            var daysArray = calcDaysArray(year, month);
+
+            var preTemplate = "";
+            for (var i = 0; i < daysArray.pre.length; i++) {
+                preTemplate += "<span class='gray'>" + daysArray.pre[i] + "</span>";
+            }
+
+            var curTemplate = "";
+            for (var i = 0; i < daysArray.cur.length; i++) {
+                curTemplate += "<span>" + daysArray.cur[i] + "</span>";
+            }
+
+            var nextTemplate = "";
+            for (var i = 0; i < daysArray.next.length; i++) {
+                nextTemplate += "<span class='gray'>" + daysArray.next[i] + "</span>";
+            }
+
+            var template = `
+        <div class="header">
+            <button>&lt;</button>
+            <h3>${year}年${month}月</h3>
+            <button>&gt;</button>
+        </div>
+        <div class="title"><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span></div>
+        <div class="items">${preTemplate}${curTemplate}${nextTemplate}</div>`;
+
+            document.getElementById('calendar').innerHTML = template;
+        }
+
+        // 显示选择月视图
+        function selectMonthView(year) {
+
+        }
+
+        // 显示选择年视图
+        function selectYearView(year) {
+
+        }
+
+    </script>
+</head>
+
+<body>
+
+    <div id="calendar"></div>
+
+    <script>
+        // 启动
+        selectDayView(2021, 8);
+    </script>
+
+</body>
+
+</html>
