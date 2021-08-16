@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>margin外边距</title>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        div {
+            width: 600px;
+            outline: 1px solid red;
+
+            /* 【重叠计算方法】正正取最大、负负取最小和正负相加 */
+            /* margin-top: 60px; */
+            margin-top: 40px;
+            /* margin-top: -25px; */
+
+            /* 1.【父子层叠】如果父结点不是block类型的不会层叠 */
+            /* display: inline-block; */
+
+            /* 2.【父子层叠】如果父结点设置了下列属性也不会重叠（最后一个元素对应 *-bottom 即可） */
+            /* padding-top:10px; */
+            /* border-top:10px solid gray; */
+        }
+
+        span {
+
+            /* 就很正常 */
+            /* display: inline-block; */
+
+
+            /* 会发现合并问题 */
+            display: block;
+
+
+            width: 100px;
+            height: 100px;
+            margin: 50px;
+            outline: 1px solid blue;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div>
+
+        <!--
+            3.【父子层叠】父子直接存在inline元素不会层叠
+         -->
+        <!-- <i>2</i> -->
+        <span>1</span>
+        <span>2</span>
+        <span>3</span>
+        <span>4</span>
+        <span>5</span>
+        <span>6</span>
+        <span>7</span>
+        <!-- 2 -->
+    </div>
+
+</body>
+
+</html>
