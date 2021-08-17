@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promise承诺</title>
+</head>
+
+<body>
+
+    <script>
+
+        // 1、pending[待定]初始状态
+        // 2、fulfilled[实现]操作成功
+        // 3、rejected[被否决]操作失败
+
+        window.promise = new Promise(function (resolve, reject) {
+
+            setTimeout(function () {
+
+                // 拒绝
+                // reject('-拒绝-');
+
+                // 解决
+                resolve('-解决-');
+
+            }, 2000);
+
+        })
+
+            // 一定执行的方法
+            .finally(function () {
+                console.log('finally');
+            })
+
+            // 定义解决处理方法
+            .then(function (data) {
+
+                console.log('then', data);
+
+                // return 'then返回的数据';
+
+                // 相当于返回新的承诺对象
+                // throw new Error('then返回的错误信息');
+                // return Promise.reject('新的拒绝');
+            })
+
+            // 定义拒绝处理方法
+            .catch(function (error) {
+
+                console.log('catch', error);
+
+                // return 'catch返回的数据';
+
+            });
+
+    </script>
+
+</body>
+
+</html>
