@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>height高</title>
+    <style>
+        div {
+            border: 1px solid red;
+
+            /* 1.父亲设置了高 */
+            height: 200px;
+
+            /* 2.定位 */
+            /* position: relative; */
+
+        }
+
+        span {
+            display: inline-block;
+            width: 100px;
+            background-color: aqua;
+            vertical-align: top;
+            margin-left: 10px;
+        }
+
+        span:nth-child(1) {
+            height: 300px;
+        }
+
+        span:nth-child(2) {
+            height: 100%;
+            /* position: absolute; */
+        }
+    </style>
+</head>
+
+<body>
+
+    <div>
+        <span>固定高</span>
+        <span>100%</span>
+    </div>
+
+</body>
+
+</html>
