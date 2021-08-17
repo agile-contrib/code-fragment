@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BFC块级格式化上下文</title>
+    <style>
+        div {
+            outline: 1px solid red;
+            width: 100px;
+
+            /*
+                一个隔离的渲染区域，容器里面的子元素不会在布局上影响到外面的元素，反之也是如此
+                记住下列几个产生条件：
+                1.使用了浮动
+                2.overflow不为visible
+                3.relative和static之外的定位
+            */
+            /* overflow: hidden; */
+            /* float: left; */
+            /* position: absolute; */
+        }
+
+        span {
+            float: left;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div>
+        <span>内容</span>
+    </div>
+    【尾随的内容】
+
+</body>
+
+</html>
