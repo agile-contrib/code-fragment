@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>prototype原型</title>
+</head>
+
+<body>
+
+    <script>
+
+        // 两个类
+        function A() { }
+        function B() { }
+
+        // 在A上定义一些东西
+        A.doitA = function () {
+            console.log('定义在A上的方法');
+        };
+
+        // 在B上定义一些东西
+        B.doitB = function () {
+            console.log('定义在B上的方法');
+        };
+
+        // 定义A的原型是B
+        A.prototype = B;
+        // A.prototype.constructor = A; // 有时候我们会根据构造器来判断类型
+
+        // 创建A的实例对象
+        var a = new A();
+
+        // 调用a实例对象上内容
+        // a.doitA(); // Uncaught TypeError: a.doitA is not a function
+        a.doitB();
+
+        console.log(a);
+        // console.log(a.__proto__);
+
+    </script>
+
+</body>
+
+</html>
