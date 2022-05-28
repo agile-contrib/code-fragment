@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>download下载</title>
+    <script>
+        function download() {
+            let xhr = new XMLHttpRequest();
+            xhr.open("GET", "https://hai2007.github.io/clunch/src/assets/clunch.png", true);
+            xhr.responseType = 'blob';
+            xhr.onload = function (e) {
+                var url = window.URL.createObjectURL(xhr.response)
+                var btn = document.createElement('a');
+                btn.href = url
+                btn.download = "clunch.png";
+                btn.click()
+            }
+            xhr.send();
+        }
+    </script>
+</head>
+
+<body>
+
+    <!-- 
+        如果跨域等，不会下载，而是直接打开
+     -->
+    <a href="https://hai2007.github.io/clunch/src/assets/clunch.png" download="clunch.png">直接download下载</a>
+
+    <!-- 
+        如果报类似：
+
+        Access to XMLHttpRequest at 'clunch.png' from origin 'null' has been blocked by CORS policy:
+             No 'Access-Control-Allow-Origin' header is present on the requested resource.
+
+        很可能是服务器响应头没这个字段：
+
+        access-control-allow-origin: *
+
+        【解释】
+
+        上面的原因就是跨域了
+
+        跨域并不会阻止请求的发出，也不会阻止请求的接受，跨域是浏览器为了保护当前页面，
+        你的请求得到了响应，浏览器不会把响应的数据交给页面上的回调，取而代之的是去提示你这是一个跨域数据。
+
+        access-control-allow-origin 响应头字段，就是告诉浏览器，
+        如果请求我的资源的页面是我这个响应头里记录了的"源"，则不要拦截此响应，允许数据通行。
+     -->
+    <button onclick="download()">通过blob修改请求地址</button>
+
+</body>
+
+</html>
