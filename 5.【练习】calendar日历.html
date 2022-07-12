@@ -7,6 +7,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>calendar日历</title>
     <style>
+        .github {
+            position: fixed;
+            transform: rotate(-45deg);
+            bottom: 70px;
+            line-height: 1.6em;
+            right: -70px;
+            background-color: #9e9695;
+            outline: 4px solid #9e9695;
+            transform-origin: 150px 23px;
+            border: 2px dashed #faf6f5;
+            width: 300px;
+            text-align: center;
+            color: #f7f3f2;
+            z-index: 2;
+            font-family: sans-serif;
+            text-decoration: none;
+        }
+    </style>
+    <style>
         #calendar {
             border: 1px solid #555555;
             width: 245px;
@@ -204,6 +223,8 @@
 </head>
 
 <body>
+
+    <a href="https://github.com/agile-contrib/code-fragment" class="github" target="_blank">Fork me on Github</a>
 
     <input type="text" id='dateinput'>
     <div id="calendar"></div>
