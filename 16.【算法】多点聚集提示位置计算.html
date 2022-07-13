@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多点聚集提示位置计算</title>
+    <style>
+        #root {
+            outline: 1px solid red;
+            width: 700px;
+            height: 500px;
+            position: relative;
+        }
+
+        .point {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: red;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .hover {
+            position: absolute;
+            width: 100px;
+            height: 50px;
+            background-color: white;
+            outline: 1px solid blue;
+        }
+    </style>
+    <script>
+
+        // 求解最佳悬浮位置
+        function calcHoverPosition(_points, _hoverSize, _regionSize) {
+
+            var _hoverPosition = [];
+            var degs = [-0.5, -0.75, -1, -1.25, -1.5, -1.75, 0, -0.25];
+
+            var index, flag, k, deg, dis;
+            for (index = 0; index < _points.length; index++) {
+                _hoverPosition[index] = [
+                    _points[index][0] - _hoverSize[0] * 0.5,
+                    _points[index][1] - _hoverSize[1] - 5,
+                ];
+
+                deg = 0;
+                dis = 5 + _hoverSize[1] * 0.5;
+
+                flag = 0;
+                while (true) {
+
+                    // 如果超过计算次数上限，放弃
+                    if (flag > 10000) {
+                        _hoverPosition[index] = [
+                            _points[index][0] - _hoverSize[0] * 0.5,
+                            _points[index][1] - _hoverSize[1] - 5
+                        ];
+                        break;
+                    }
+
+                    //  校对参数
+                    if (deg >= degs.length) {
+                        deg = 0;
+                        dis += 10;
+                    }
+
+                    // 更新新的位置
+                    var cos = Math.cos(degs[deg] * Math.PI), sin = Math.sin(degs[deg] * Math.PI);
+                    var hoverCenter = [
+                        (_points[index][0] - _points[index][0]) * cos - (_points[index][1] - dis - _points[index][1]) * sin + _points[index][0],
+                        (_points[index][0] - _points[index][0]) * sin + (_points[index][1] - dis - _points[index][1]) * cos + _points[index][1]
+                    ];
+
+                    _hoverPosition[index] = [
+                        hoverCenter[0] - _hoverSize[0] * 0.5,
+                        hoverCenter[1] - _hoverSize[1] * 0.5
+                    ];
+
+                    deg += 1;
+
+                    flag += 1;
+
+                    // 判断是否越界
+                    if (
+                        _hoverPosition[index][0] < 0 ||
+                        _hoverPosition[index][0] + _hoverSize[0] > _regionSize[0] ||
+                        _hoverPosition[index][1] < 0 ||
+                        _hoverPosition[index][1] + _hoverSize[1] > _regionSize[1]
+                    ) {
+                        continue;
+                    }
+
+                    // 判断和已经有的是不是会重叠
+                    var doubleFlag = false;
+                    for (k = 0; k < index; k++) {
+
+                        if (
+
+                            // x重叠
+                            (
+                                _hoverPosition[index][0] > _hoverPosition[k][0]
+                                    ? _hoverPosition[index][0] < _hoverPosition[k][0] + _hoverSize[0]
+                                    : _hoverPosition[k][0] < _hoverPosition[index][0] + _hoverSize[0]
+                            ) &&
+
+                            // y重叠
+                            (
+                                _hoverPosition[index][1] > _hoverPosition[k][1]
+                                    ? _hoverPosition[index][1] < _hoverPosition[k][1] + _hoverSize[1]
+                                    : _hoverPosition[k][1] < _hoverPosition[index][1] + _hoverSize[1]
+                            )
+                        ) {
+                            doubleFlag = true;
+                            break;
+                        }
+
+                    }
+                    if (doubleFlag) {
+                        continue;
+                    }
+
+
+                    // 如果上面的检查都通过了，ok，得到了一个解
+                    break;
+                }
+
+            }
+
+            return _hoverPosition;
+        }
+
+    </script>
+</head>
+
+<body>
+
+    <div id="root"></div>
+
+    <script>
+
+        var rootEl = document.getElementById('root');
+
+        // 需要悬浮提示的点
+        var points = [[5, 10], [30, 10], [60, 9], [300, 400], [320, 400], [300, 420], [330, 390], [500, 100]];
+        var hoverSize = [100, 50];
+
+        // 计算每个点的悬浮位置
+        var hoverPosition = calcHoverPosition(points, hoverSize, [700, 500]);
+
+        // 把点和悬浮显示出来
+        var index, pointEl, hoverEl;
+        for (index = 0; index < points.length; index++) {
+
+            pointEl = document.createElement('div');
+            pointEl.setAttribute('class', 'point');
+            pointEl.style.left = points[index][0] + "px";
+            pointEl.style.top = points[index][1] + "px";
+
+            rootEl.appendChild(pointEl);
+
+            hoverEl = document.createElement('div');
+            hoverEl.setAttribute('class', 'hover');
+
+            // 写死直接在点上方悬浮
+            // hoverEl.style.left = points[index][0] - hoverSize[0] * 0.5 + "px";
+            // hoverEl.style.top = points[index][1] - hoverSize[1] - 5 + "px";
+
+            // 使用计算的悬浮位置
+            hoverEl.style.left = hoverPosition[index][0] + "px";
+            hoverEl.style.top = hoverPosition[index][1] + "px";
+
+            hoverEl.innerHTML = points[index];
+
+            rootEl.appendChild(hoverEl);
+
+
+        }
+
+    </script>
+
+</body>
+
+</html>
