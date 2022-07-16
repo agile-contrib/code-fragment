@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>拖拽读取文件和文件夹</title>
+    <style>
+        #target-id {
+            display: inline-block;
+            width: 200px;
+            height: 100px;
+            outline: 2px dashed red;
+            text-align: center;
+            line-height: 100px;
+            font-size: 20px;
+            user-select: none;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="target-id">
+        拖拽文件到此处～
+    </div>
+
+    <script>
+
+        var targetEl = document.getElementById('target-id');
+
+        targetEl.addEventListener("dragover", function (event) {
+            event.preventDefault();
+        }, false);
+
+        targetEl.addEventListener("drop", function (event) {
+            event.preventDefault();
+
+            // 如果拖拽多个文件或文件夹，items长度就是一次性拖拽内容的个数
+            var items = event.dataTransfer.items;
+
+            for (var index = 0; index < items.length; index++) {
+
+                // item就是你拖拽的其中一个文件或文件夹
+                var item = items[index].webkitGetAsEntry();
+                console.error('【' + (index + 1) + '】', item);
+
+                // 如果是文件夹，进一步解析
+                if (item.isDirectory) {
+
+                    // 使用目录实体来创建 FileSystemDirectoryReader 实例
+                    var directoryReader = item.createReader();
+
+                    // 上面只是创建了 reader 实例，现在使用 reader 实例来读取 目录实体（读取目录内容）
+                    directoryReader.readEntries(function (entries) {
+
+                        console.log('entries', entries);
+
+                    }, function (error) {
+                        console.error(error);
+                    });
+
+                }
+
+            }
+
+
+        }, false);
+
+    </script>
+
+</body>
+
+</html>
